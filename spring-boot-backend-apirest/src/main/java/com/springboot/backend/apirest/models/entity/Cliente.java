@@ -28,7 +28,7 @@ public class Cliente implements Serializable {
 	
 	@Column(nullable = false)
 	@NotEmpty
-	@Size(min = 3)
+	@Size(min = 3, max = 30)
 	private String nombre;
 	
 	@NotEmpty
