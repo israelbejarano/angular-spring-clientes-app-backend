@@ -1,5 +1,6 @@
 package com.springboot.backend.apirest.controllers;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -150,6 +151,16 @@ public class ClienteRestController {
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		Map<String, Object> response = new HashMap<>();
 		try {
+			// borrar fotos del cliente si las tuviese
+			Cliente cliente = clienteService.findById(id);
+			String nombreFotoAnterior = cliente.getFoto();
+			if(nombreFotoAnterior != null && nombreFotoAnterior.length() > 0) {
+				Path rutaFotoAnterior = Paths.get("uploads").resolve(nombreFotoAnterior).toAbsolutePath(); 
+				File archivoFotoAnterior = rutaFotoAnterior.toFile();
+				if(archivoFotoAnterior.exists() && archivoFotoAnterior.canRead()) {
+					archivoFotoAnterior.delete();
+				}
+			}
 			clienteService.delete(id);			
 		} catch (DataAccessException e) {
 			response.put("mensaje", "Error al eliminar el cliente de BBDD");
@@ -174,6 +185,15 @@ public class ClienteRestController {
 				response.put("mensaje", "Error al subir la imagen del cliente " + nombreArchivo);
 				response.put("error", e.getMessage().concat(": ").concat(e.getCause().getMessage()));
 				return new ResponseEntity<Map<String, Object>>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+			
+			String nombreFotoAnterior = cliente.getFoto();
+			if(nombreFotoAnterior != null && nombreFotoAnterior.length() > 0) {
+				Path rutaFotoAnterior = Paths.get("uploads").resolve(nombreFotoAnterior).toAbsolutePath(); 
+				File archivoFotoAnterior = rutaFotoAnterior.toFile();
+				if(archivoFotoAnterior.exists() && archivoFotoAnterior.canRead()) {
+					archivoFotoAnterior.delete();
+				}
 			}
 			
 			cliente.setFoto(nombreArchivo);
