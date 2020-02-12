@@ -52,11 +52,13 @@ public class Cliente implements Serializable {
 
 	private String foto;
 
+	// al usar carga perezosa tenemos que ignorar estas
+	// dos propiedades del json mapeado ya que si no
+	// nos dará error
 	@ManyToOne(fetch = FetchType.LAZY) // carga perezosa
+	@NotNull(message = "la región no puede estar vacía")
 	@JoinColumn(name = "region_id")
-	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" }) // al usar carga perezosa tenemos que ignorar estas
-																		// dos propiedades del json mapeado ya que si no
-																		// nos dará error
+	@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
 	private Region region;
 
 	/*
