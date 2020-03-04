@@ -5,7 +5,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -30,6 +32,18 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean("authenticationManager")
 	protected AuthenticationManager authenticationManager() throws Exception {
 		return super.authenticationManager();
+	}
+	
+	@Override
+	public void configure(HttpSecurity http) throws Exception {
+		http.authorizeRequests()
+		.anyRequest().authenticated()
+		.and()
+		.csrf().disable()
+		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); 
+		// como tenemos el front de angular tenemos que desabilitar el csrf en spring
+		// hemos desabilitado el manejo de sesion por la parte de spring
+		// ya que lo hacemos por el ResourceServerConfig con el oauth2 y el uso de tokens
 	}
 
 }
