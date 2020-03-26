@@ -37,7 +37,7 @@ import com.springboot.backend.apirest.models.entity.Region;
 import com.springboot.backend.apirest.models.services.IClienteService;
 import com.springboot.backend.apirest.models.services.IUploadFileService;
 
-@CrossOrigin(origins = {"http://localhost:4200"})
+@CrossOrigin(origins = {"http://localhost:4200", "*"}) // para prod real en vez de * poner la ip/direccion del server de prod})
 @RestController
 @RequestMapping("/api")
 public class ClienteRestController {

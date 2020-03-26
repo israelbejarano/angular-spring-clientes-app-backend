@@ -19,7 +19,7 @@ import com.springboot.backend.apirest.models.entity.Factura;
 import com.springboot.backend.apirest.models.entity.Producto;
 import com.springboot.backend.apirest.models.services.IClienteService;
 
-@CrossOrigin(origins = {"http://localhost:4200"})
+@CrossOrigin(origins = {"http://localhost:4200", "*"}) // para prod real en vez de * poner la ip/direccion del server de prod
 @RestController
 @RequestMapping("/api")
 public class FacturaRestController {
